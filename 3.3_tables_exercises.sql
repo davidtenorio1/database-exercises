@@ -1,3 +1,4 @@
+/*
 -List all the tables in the database
 current_dept_emp
 departments
@@ -28,3 +29,4 @@ CREATE TABLE `dept_manager` (
   CONSTRAINT `dept_manager_ibfk_1` FOREIGN KEY (`emp_no`) REFERENCES `employees` (`emp_no`) ON DELETE CASCADE,
   CONSTRAINT `dept_manager_ibfk_2` FOREIGN KEY (`dept_no`) REFERENCES `departments` (`dept_no`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
