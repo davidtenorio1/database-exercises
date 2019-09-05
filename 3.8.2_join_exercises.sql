@@ -54,3 +54,18 @@ WHERE dept_manager.to_date = '9999-01-01' and salaries.to_date = '9999-01-01'
 order by department_name;
 
 --Find the number of employees in each department.
+select  dept_emp.dept_no, departments.dept_name, count(dept_emp.emp_no) as num_employees
+from departments 
+join dept_emp on departments.dept_no = dept_emp. dept_no
+where dept_emp.to_date = '9999-01-01'
+group by dept_no; 
+
+--Which department has the highest average salary?
+
+select distinct departments.dept_name, avg(salaries.salary) as aveage_salary
+from departments 
+join dept_emp on dept_emp.dept_no = departments.dept_no
+join salaries on salaries.emp_no = dept_emp.emp_no
+where dept_emp.to_date = '9999-01-01'
+group by dept_name
+order by avg(salaries.salary) desc;
