@@ -38,6 +38,44 @@ where employees.gender = 'F');
 
 --Find all the employees that currently have a higher than average salary.
 --154543 rows in total. Here is what the first 5 rows will look like:
+select employees.first_name, employees.last_name, salary
+from employees
+join salaries on employees.emp_no = salaries.emp_no
+where salaries.to_date = "9999-01-01" 
+and salaries.salary >
+(select avg(salary)
+from salaries)
 
 --How many current salaries are within 1 standard deviation of the highest salary? (Hint: you can use a built in function to calculate the standard deviation.) What percentage of all salaries is this?
 --78 salaries
+
+--BONUS 1
+--Find all the department names that currently have female managers.
+select dept_name
+from departments
+join dept_manager on departments.dept_no = dept_manager.dept_no
+join employees on employees.emp_no = dept_manager.emp_no
+where employees.gender = 'F' and dept_manager.to_date = '9999-01-01'
+order by dept_name;
+
+--BONUS 2
+--Find the first and last name of the employee with the highest salary.
+select employees.first_name, employees.last_name
+from employees
+join salaries on employees.emp_no = salaries.emp_no
+where salaries.to_date = "9999-01-01" 
+and salaries.salary =
+(select max(salary)
+from salaries)
+
+--BONUS 3
+--Find the department name that the employee with the highest salary works in.
+select dept_name
+from departments
+join dept_emp on departments.dept_no = dept_emp.dept_no
+join employees on employees.emp_no = dept_emp.emp_no
+join salaries on employees.emp_no = salaries.emp_no
+where salaries.to_date = "9999-01-01" 
+and salaries.salary =
+(select max(salary)
+from salaries)
