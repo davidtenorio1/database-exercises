@@ -183,6 +183,27 @@ from film
 where language_id = '1');
 
 --Use subqueries to display all actors who appear in the film Alone Trip.
+select first_name, last_name
+from actor
+where actor_id in
+(select actor_id
+from film_actor
+join film using (film_id)
+where title like 'Alone Trip');
+
+--You want to run an email marketing campaign in Canada, for which you will need the names and email addresses of all Canadian customers.
+
+
+--Sales have been lagging among young families, and you wish to target all family movies for a promotion. Identify all movies categorized as famiy films.
+
+
+--Write a query to display how much business, in dollars, each store brought in.
+
+
+--Write a query to display for each store its store ID, city, and country.
+
+
+--List the top five genres in gross revenue in descending order. (Hint: you may need to use the following tables: category, film_category, inventory, payment, and rental.)
 
 
 
