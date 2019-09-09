@@ -192,19 +192,78 @@ join film using (film_id)
 where title like 'Alone Trip');
 
 --You want to run an email marketing campaign in Canada, for which you will need the names and email addresses of all Canadian customers.
-
+select first_name, last_name, email
+from customer
+join address using (address_id)
+join city using (city_id)
+join country using (country_id)
+where country like 'Canada';
 
 --Sales have been lagging among young families, and you wish to target all family movies for a promotion. Identify all movies categorized as famiy films.
-
+select title
+from film
+join film_category using(film_id)
+join category using(category_id)
+where name like 'Family';
 
 --Write a query to display how much business, in dollars, each store brought in.
-
+select store_id, sum(amount) as business_by_dollar_amount
+from payment
+join store on store.manager_staff_id = payment.staff_id
+group by store_id;
 
 --Write a query to display for each store its store ID, city, and country.
-
+select store_id, city, country
+from store
+join address using(address_id)
+join city using(city_id)
+join country using(country_id);
 
 --List the top five genres in gross revenue in descending order. (Hint: you may need to use the following tables: category, film_category, inventory, payment, and rental.)
+select name as Genre, sum(amount) as Gross_Revenue
+from payment
+join rental using(rental_id)
+join inventory using(inventory_id)
+join film_category using (film_id)
+join category using(category_id)
+group by name
+order by sum(amount) desc
+limit 5;
 
 
 
+--SELECT Statements
+--Select all columns from the actor table.
+select * from actor;
+--Select only the last_name column from the actor table.
+select last_name from actor;
+--Select only the following columns from the film table.
+select * from film;
 
+
+
+--DISTINCT Operator
+--Select all distinct (different) last names from the actor table.
+select distinct last_name from actor;
+--Select all distinct (different) postal codes from the address table.
+select distinct postal_code from address;
+--Select all distinct (different) ratings from the film table.
+select distinct rating from film;
+
+
+--WHERE Clause
+--Select the title, description, rating, movie length columns from the films table that last 3 hours or longer.
+
+--Select the payment id, amount, and payment date columns from the payments table for payments made on or after 05/27/2005.
+
+--Select the primary key, amount, and payment date columns from the payment table for payments made on 05/27/2005.
+
+--Select all columns from the customer table for rows that have a last names beginning with S and a first names ending with N.
+
+--Select all columns from the customer table for rows where the customer is inactive or has a last name beginning with "M".
+
+--Select all columns from the category table for rows where the primary key is greater than 4 and the name field begins with either C, S or T.
+
+--Select all columns minus the password column from the staff table for rows that contain a password.
+
+--Select all columns minus the password column from the staff table for rows that do not contain a password.
