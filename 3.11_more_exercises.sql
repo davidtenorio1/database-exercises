@@ -458,4 +458,45 @@ on city.city_id = address.city_id;
 
 
 --What is the average replacement cost of a film? Does this change depending on the rating of the film?
+"Average replacement cost is 19.98. It varies slightly by moving rating with PG being cheaper than average."
+select avg(replacement_cost)
+from film;
+
+select rating, avg(replacement_cost)
+from film
+group by rating;
+
+--How many different films of each genre are in the database?
+select name, count(film_id)
+from film
+join film_category using (film_id)
+join category using (category_id)
+group by name;
+
+--What are the 5 frequently rented films?
+select title, count(title) as number_of_rentals
+from rental
+join inventory using (inventory_id)
+join film using (film_id)
+group by title desc
+order by number_of_rentals desc
+limit 5;
+
+--What are the most most profitable films (in terms of gross revenue)?
+select title, sum(amount) as gross_revenue
+from payment
+join rental using (rental_id)
+join inventory using (inventory_id)
+join film using (film_id)
+group by title
+order by gross_revenue desc
+limit 5;
+
+--Who is the best customer?
+
+
+
+
+
+
 
