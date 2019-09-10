@@ -326,13 +326,136 @@ where payment_date between '2005-05-25 00:00:00' and '2005-05-25 23:59:59';
 
 --Select the following columns from the film table for films where the length of the description is between 100 and 120.
 --Hint: total_rental_cost = rental_duration * rental_rate
+select *
+from film
+where char_length(description) between 100 and 120; 
 
 
 
 
+--LIKE Operator
+--Select the following columns from the film table for rows where the description begins with "A Thoughtful".
+ select *
+from film
+where description like "A Thoughtful%";
+
+--Select the following columns from the film table for rows where the description ends with the word "Boat".
+select *
+from film
+where description like "%boat";
+
+--Select the following columns from the film table where the description contains the word "Database" and the length of the film is greater than 3 hours.
+select *
+from film
+where description like "%database%" and length >180;
 
 
 
 
+--LIMIT Operator
+--Select all columns from the payment table and only include the first 20 rows.
+select *
+from payment
+limit 20;
 
+--Select the payment date and amount columns from the payment table for rows where the payment amount is greater than 5, and only select rows whose zero-based index in the result set is between 1000-2000.
+select payment_date, amount
+from payment
+where amount > 5
+and payment_id between 1000 and 2000
+
+--Select all columns from the customer table, limiting results to those where the zero-based index is between 101-200.
+select *
+from customer
+limit 100 offset 100;
+
+
+
+
+--ORDER BY statement
+--Select all columns from the film table and order rows by the length field in ascending order.
+select *
+from film
+order by length;
+
+--Select all distinct ratings from the film table ordered by rating in descending order.
+select distinct rating
+from film
+order by rating desc;
+
+--Select the payment date and amount columns from the payment table for the first 20 payments ordered by payment amount in descending order.
+select payment_date, amount
+from payment
+order by amount desc
+limit 20;
+
+--Select the title, description, special features, length, and rental duration columns from the film table for the first 10 films with behind the scenes footage under 2 hours in length and a rental duration between 5 and 7 days, ordered by length in descending order.
+select title, description, special_features, length, rental_duration
+from film
+where special_features like "%behind%"
+and length <120
+and rental_duration >= 5 and rental_duration <=7
+order by length desc
+limit 10;
+
+
+
+
+--Joins
+--Select customer first_name/last_name and actor first_name/last_name columns from performing a left join between the customer and actor column on the last_name column in each table. (i.e. customer.last_name = actor.last_name)
+select customer.first_name, customer.last_name, actor.first_name, actor.last_name
+from customer
+left join actor
+on customer.last_name = actor.last_name;
+
+--Label customer first_name/last_name columns as customer_first_name/customer_last_name
+select customer.first_name as customer_first_name, customer.last_name as customer_last_name, actor.first_name, actor.last_name
+from customer
+left join actor
+on customer.last_name = actor.last_name;
+
+--Label actor first_name/last_name columns in a similar fashion.
+select customer.first_name as customer_first_name, customer.last_name as customer_last_name, actor.first_name as actor_first_name, actor.last_name as actor_last_name
+from customer
+left join actor
+on customer.last_name = actor.last_name;
+--returns correct number of records: 620
+
+--Select the customer first_name/last_name and actor first_name/last_name columns from performing a /right join between the customer and actor column on the last_name column in each table. (i.e. customer.last_name = actor.last_name)
+select customer.first_name as customer_first_name, customer.last_name as customer_last_name, actor.first_name as actor_first_name, actor.last_name as actor_last_name
+from customer
+right join actor
+on customer.last_name = actor.last_name;
+
+--Select the customer first_name/last_name and actor first_name/last_name columns from performing an inner join between the customer and actor column on the last_name column in each table. (i.e. customer.last_name = actor.last_name)
+select customer.first_name as customer_first_name, customer.last_name as customer_last_name, actor.first_name as actor_first_name, actor.last_name as actor_last_name
+from customer
+join actor
+on customer.last_name = actor.last_name;
+
+--Select the city name and country name columns from the city table, performing a left join with the country table to get the country name column.
+select city, country
+from city
+left join country
+on city.country_id = country.country_id;
+
+--Select the title, description, release year, and language name columns from the film table, performing a left join with the language table to get the "language" column.
+select title, description, release_year, name as language
+from film
+left join language
+on language.language_id = film.language_id
+
+
+--Select the first_name, last_name, address, address2, city name, district, and postal code columns from the staff table, performing 2 left joins with the address table then the city table to get the address and city related columns.
+select first_name, last_name, address, address2, city, district, postal_code
+from staff
+join address
+on address.address_id = staff.address_id
+join city
+on city.city_id = address.city_id;
+
+
+
+
+--What is the average replacement cost of a film? Does this change depending on the rating of the film?
 
