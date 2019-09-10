@@ -493,7 +493,17 @@ order by gross_revenue desc
 limit 5;
 
 --Who is the best customer?
+select first_name, last_name, sum(amount) as total
+from payment
+join customer using(customer_id)
+group by customer_id
+order by total desc;
 
+--Who are the most popular actors (that have appeared in the most films)?
+
+--What are the sales for each store for each month in 2005?
+
+--Bonus: Find the film title, customer name, customer phone number, and customer address for all the outstanding DVDs.
 
 
 
