@@ -19,10 +19,6 @@ join departments using (dept_no)
 where dept_emp.to_date > now() and salaries.to_date > now()
 group by dept_name;
 
-
-
-
-
 --WORLD DATABASE
 
 --What languages are spoken in Santa Monica?
@@ -99,10 +95,6 @@ from country
 join city on 
 city.countrycode = country.code
 where city.name like 'Tigre';
-
-
-
-
 
 --SAKILA DATABASE
 
@@ -230,8 +222,6 @@ group by name
 order by sum(amount) desc
 limit 5;
 
-
-
 --SELECT Statements
 --Select all columns from the actor table.
 select * from actor;
@@ -242,8 +232,6 @@ select last_name from actor;
 --Select only the following columns from the film table.
 select * from film;
 
-
-
 --DISTINCT Operator
 --Select all distinct (different) last names from the actor table.
 select distinct last_name from actor;
@@ -253,8 +241,6 @@ select distinct postal_code from address;
 
 --Select all distinct (different) ratings from the film table.
 select distinct rating from film;
-
-
 
 --WHERE Clause
 --Select the title, description, rating, movie length columns from the films table that last 3 hours or longer.
@@ -297,8 +283,6 @@ select staff_id, first_name, last_name, address_id, picture, email, store_id, ac
 from staff
 where password is null;
 
-
-
 --IN Operator
 --Select the phone and district columns from the address table for addresses in California, England, Taipei, or West Java.
 select phone, district
@@ -315,9 +299,6 @@ select *
 from film
 where rating in ('G', 'PG-13', 'NC-17');
 
-
-
-
 --BETWEEN Operator
 --Select all columns from the payment table for payments made between midnight 05/25/2005 and 1 second before midnight 05/26/2005.
 select *
@@ -329,9 +310,6 @@ where payment_date between '2005-05-25 00:00:00' and '2005-05-25 23:59:59';
 select *
 from film
 where char_length(description) between 100 and 120; 
-
-
-
 
 --LIKE Operator
 --Select the following columns from the film table for rows where the description begins with "A Thoughtful".
@@ -349,9 +327,6 @@ select *
 from film
 where description like "%database%" and length >180;
 
-
-
-
 --LIMIT Operator
 --Select all columns from the payment table and only include the first 20 rows.
 select *
@@ -368,9 +343,6 @@ and payment_id between 1000 and 2000
 select *
 from customer
 limit 100 offset 100;
-
-
-
 
 --ORDER BY statement
 --Select all columns from the film table and order rows by the length field in ascending order.
@@ -397,9 +369,6 @@ and length <120
 and rental_duration >= 5 and rental_duration <=7
 order by length desc
 limit 10;
-
-
-
 
 --Joins
 --Select customer first_name/last_name and actor first_name/last_name columns from performing a left join between the customer and actor column on the last_name column in each table. (i.e. customer.last_name = actor.last_name)
@@ -445,7 +414,6 @@ from film
 left join language
 on language.language_id = film.language_id
 
-
 --Select the first_name, last_name, address, address2, city name, district, and postal code columns from the staff table, performing 2 left joins with the address table then the city table to get the address and city related columns.
 select first_name, last_name, address, address2, city, district, postal_code
 from staff
@@ -453,9 +421,6 @@ join address
 on address.address_id = staff.address_id
 join city
 on city.city_id = address.city_id;
-
-
-
 
 --What is the average replacement cost of a film? Does this change depending on the rating of the film?
 "Average replacement cost is 19.98. It varies slightly by moving rating with PG being cheaper than average."
@@ -500,12 +465,40 @@ group by customer_id
 order by total desc;
 
 --Who are the most popular actors (that have appeared in the most films)?
+SELECT 
+actor.first_name AS first_name,
+actor.last_name AS last_name,
+a.film_count
+FROM actor
+LEFT JOIN(
+SELECT
+COUNT(film_id) AS film_count,
+actor_id
+FROM film_actor
+GROUP BY actor_id)AS a ON (actor.actor_id=a.actor_id)
+ORDER BY film_count DESC;
 
 --What are the sales for each store for each month in 2005?
-
+SELECT 
+CONCAT(YEAR(payment_date),"-",MONTH(payment_date)) AS date,
+staff.store_id,
+SUM(amount) AS sales
+FROM payment
+LEFT JOIN staff ON (payment.staff_id=staff.staff_id)
+WHERE year(payment_date)=2005
+GROUP BY date,staff.store_id;
+                                    
 --Bonus: Find the film title, customer name, customer phone number, and customer address for all the outstanding DVDs.
-
-
+SELECT 
+film.title,
+CONCAT(customer.last_name, " ,",customer.first_name) AS customer_name,
+address.phone
+FROM rental
+LEFT JOIN customer ON (rental.customer_id=customer.customer_id)
+LEFT JOIN address ON (customer.address_id=address.address_id)
+LEFT JOIN inventory ON (rental.inventory_id=inventory.inventory_id)
+LEFT JOIN film ON (inventory.film_id=film.film_id)
+WHERE rental.return_date IS NULL;
 
 
 
